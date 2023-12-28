@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -29,19 +30,19 @@ public class Stat {
      * Название приложения.
      */
     @Column(name = "app_name")
-    @NotNull(message = "Название приложения не может отсутствовать.")
+    @NotBlank(message = "Название приложения не может отсутствовать.")
     private String app;
     /**
      * Идентификатор ресурса.
      */
     @Column(name = "uri_address")
-    @NotNull(message = "Идентификатор ресурса не может отсутствовать.")
+    @NotBlank(message = "Идентификатор ресурса не может отсутствовать.")
     private String uri;
     /**
      * IP адрес.
      */
     @Column(name = "ip_address")
-    @NotNull(message = "ip не может отсутствовать.")
+    @NotBlank(message = "ip не может отсутствовать.")
     private String ip;
     /**
      * Время запроса.

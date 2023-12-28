@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class StatServiceImpl implements StatService {
     /**
@@ -37,10 +36,10 @@ public class StatServiceImpl implements StatService {
      */
     @Override
     @Transactional
-    public void add(StatDto statDto) {
+    public StatDto add(StatDto statDto) {
         log.info("Поступил запрос на сохранение данных.");
-        statRepository.save(mapper.toStat(statDto));
         log.info("Данные успешно сохранены.");
+        return mapper.toStatDto(statRepository.save(mapper.toStat(statDto)));
     }
 
     /**
@@ -51,7 +50,6 @@ public class StatServiceImpl implements StatService {
      * @param unique уникальность данных в списке возврата.
      */
     @Override
-    @Transactional
     public List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
         log.info("Поступил запрос на предоставление статистики.");
         log.info("Данные успешно предоставлены.");

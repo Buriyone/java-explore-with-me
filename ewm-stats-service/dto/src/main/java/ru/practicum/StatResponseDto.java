@@ -3,7 +3,7 @@ package ru.practicum;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Сущность в формате DTO подлежащая возврату.
@@ -14,12 +14,12 @@ public class StatResponseDto {
     /**
      * Название приложения.
      */
-    @NotNull(message = "Название приложения не может отсутствовать.")
+    @NotBlank(message = "Название приложения не может отсутствовать.")
     private String app;
     /**
      * Идентификатор ресурса.
      */
-    @NotNull(message = "Идентификатор ресурса не может отсутствовать.")
+    @NotBlank(message = "Идентификатор ресурса не может отсутствовать.")
     private String uri;
     /**
      * Количество запросов.

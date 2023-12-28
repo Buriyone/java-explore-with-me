@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Сущность подлежащая извлечению из базы данных.
@@ -18,12 +18,12 @@ public class StatResponse {
     /**
      * Название приложения.
      */
-    @NotNull(message = "Название приложения не может отсутствовать.")
+    @NotBlank(message = "Название приложения не может отсутствовать.")
     private String app;
     /**
      * Идентификатор ресурса.
      */
-    @NotNull(message = "Идентификатор ресурса не может отсутствовать.")
+    @NotBlank(message = "Идентификатор ресурса не может отсутствовать.")
     private String uri;
     /**
      * Количество запросов.

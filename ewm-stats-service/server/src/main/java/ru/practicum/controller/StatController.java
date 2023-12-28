@@ -32,8 +32,8 @@ public class StatController {
      */
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody StatDto statDto) {
-        service.add(statDto);
+    public StatDto add(@RequestBody StatDto statDto) {
+        return service.add(statDto);
     }
 
     /**

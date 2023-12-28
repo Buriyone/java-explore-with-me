@@ -21,6 +21,11 @@ public interface StatMapper {
     Stat toStat(StatDto statDto);
 
     /**
+     * Конвертирует {@link Stat} в {@link StatDto}.
+     */
+    StatDto toStatDto(Stat stat);
+
+    /**
      * Конвертирует {@link StatResponse} в {@link StatResponseDto}.
      */
     StatResponseDto toStatResponseDto(StatResponse statResponse);

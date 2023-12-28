@@ -10,7 +10,7 @@ import java.util.List;
  * Интерфейс сервиса статистики.
  */
 public interface StatService {
-    void add(StatDto statDto);
+    StatDto add(StatDto statDto);
 
     List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique);
 }
