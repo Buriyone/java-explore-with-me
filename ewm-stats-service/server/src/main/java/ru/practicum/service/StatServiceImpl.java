@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.StatDto;
 import ru.practicum.StatResponseDto;
+import ru.practicum.exception.model.ValidationException;
 import ru.practicum.mapper.StatMapper;
 import ru.practicum.model.Stat;
 import ru.practicum.repository.StatRepository;
@@ -53,6 +54,9 @@ public class StatServiceImpl implements StatService {
     public List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
         log.info("Поступил запрос на предоставление статистики.");
         log.info("Данные успешно предоставлены.");
+        if (end.isAfter(start)) {
+            throw new ValidationException("Конечное время не может быть раньше начального.");
+        }
         return (uris == null || uris.length == 0 ?
                 (unique ? statRepository.getUniqueStat(start, end)
                         : statRepository.getAllStat(start, end))
