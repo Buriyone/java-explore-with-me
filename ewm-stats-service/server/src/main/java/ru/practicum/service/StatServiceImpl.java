@@ -51,12 +51,12 @@ public class StatServiceImpl implements StatService {
      * @param unique уникальность данных в списке возврата.
      */
     @Override
-    public List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique) {
+    public List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
         log.info("Поступил запрос на предоставление статистики.");
-        log.info("Данные успешно предоставлены.");
         if (end.isBefore(start)) {
             throw new ValidationException("Конечное время не может быть раньше начального.");
         }
+        log.info("Данные успешно предоставлены.");
         return (uris == null || uris.length == 0 ?
                 (unique ? statRepository.getUniqueStat(start, end)
                         : statRepository.getAllStat(start, end))

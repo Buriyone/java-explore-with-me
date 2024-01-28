@@ -181,7 +181,7 @@ public class EventServiceImpl implements EventService {
             throw new NotFoundException(String.format("Событие с id: %d еще не опубликовано.",
                     eventId));
         }
-        saveStat(request, event);
+        saveStat(request);
         event.setViews(getViews(event));
         return eventMapper.toEventFullDto(eventRepository.save(event));
     }
@@ -244,7 +244,7 @@ public class EventServiceImpl implements EventService {
                 .getContent()
                 .stream()
                 .peek(event -> {
-                    saveStat(request, event);
+                    saveStat(request);
                     event.setViews(getViews(event));
                 })
                 .map(eventMapper::toEventShortDto)
@@ -454,11 +454,11 @@ public class EventServiceImpl implements EventService {
      * Вспомогательный метод сохранения статистики запросов.
      * @param request запрос с данными пользователя.
      */
-    private void saveStat(HttpServletRequest request, Event event) {
+    private void saveStat(HttpServletRequest request) {
         log.info("Производится сохранение статистики.");
         statService.add(StatDto.builder()
                 .app("main-service")
-                .uri("/events/" + event.getId())
+                .uri(request.getRequestURI())
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now().format(formatter))
                 .build());
