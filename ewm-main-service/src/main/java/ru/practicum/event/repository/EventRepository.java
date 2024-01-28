@@ -22,7 +22,7 @@ public interface EventRepository extends JpaRepository<Event, Integer>, Querydsl
     /**
      * Предоставляет список событий по списку уникальных идентификаторов.
      */
-    List<Event> findAllByIdIn(List<Integer>ids);
+    List<Event> findAllByIdIn(List<Integer> ids);
 
     /**
      * Проверяет наличие события с категорией.

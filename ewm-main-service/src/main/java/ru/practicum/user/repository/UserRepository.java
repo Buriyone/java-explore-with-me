@@ -15,14 +15,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * Проверяет наличие имени в базе.
      */
     boolean existsByName(String name);
+
     /**
      * Проверяет наличие электронной почты в базе.
      */
     boolean existsByEmail(String email);
+
     /**
      * Находит пользователя в базе по уникальному идентификатору.
      */
     Optional<User> findById(int userId);
+
     /**
      * Постранично находит пользователей в базе по массиву с уникальными идентификаторами.
      */

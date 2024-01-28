@@ -377,7 +377,7 @@ public class EventServiceImpl implements EventService {
             return new ArrayList<>();
         }
         for (Integer id : ids) {
-            if(id == 0) {
+            if (id == 0) {
                 throw new ValidationException("Уникальный идентификатор не зарегистрирован.");
             }
         }

@@ -14,10 +14,12 @@ public interface UserMapper {
      * Конвертирует {@link UserDto} в {@link User}.
      */
     User toUser(UserDto userDto);
+
     /**
      * Конвертирует {@link User} в {@link UserDto}.
      */
     UserDto toUserDto(User user);
+
     /**
      * Конвертирует {@link User} в {@link UserShortDto}.
      */

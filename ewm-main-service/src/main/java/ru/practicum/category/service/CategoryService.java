@@ -10,10 +10,16 @@ import java.util.List;
  */
 public interface CategoryService {
     CategoryDto add(CategoryDto categoryDto);
+
     CategoryDto update(int catId, CategoryDto categoryDto);
+
     void delete(int catId);
+
     List<CategoryDto> get(int from, int size);
+
     CategoryDto getById(int catId);
+
     Category findById(int catId);
+
     void existsByIds(int[] categoryIds);
 }

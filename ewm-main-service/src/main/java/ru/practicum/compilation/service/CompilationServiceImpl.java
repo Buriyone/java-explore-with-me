@@ -71,7 +71,7 @@ public class CompilationServiceImpl implements CompilationService {
     public CompilationDto update(int compId, UpdateCompilationRequest request) {
         log.info("Поступил запрос на обновление данных подборки событий.");
         Compilation compilation = findById(compId);
-        if(request.getEvents() != null) {
+        if (request.getEvents() != null) {
             compilation.setEvents(eventService.findAllByIds(request.getEvents()));
         }
         if (request.getPinned() != null) {

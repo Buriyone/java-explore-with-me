@@ -13,6 +13,7 @@ public interface CategoryMapper {
      * Конвертирует {@link CategoryDto} в {@link Category}.
      */
     Category toCategory(CategoryDto categoryDto);
+
     /**
      * Конвертирует {@link Category} в {@link CategoryDto}.
      */

@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
     public void existsByIds(int[] userIds) {
         log.debug("Осуществляется проверка пользователей из списка.");
         for (Integer id : userIds) {
-            if(id == 0) {
+            if (id == 0) {
                 throw new ValidationException("Один или несколько уникальных идентификаторов не зарегистрировано.");
             }
         }

@@ -12,10 +12,15 @@ import java.util.List;
  */
 public interface RequestService {
     ParticipationRequestDto add(int userId, int eventId);
+
     List<ParticipationRequestDto> get(int userId);
+
     ParticipationRequestDto cancel(int userId, int requestId);
+
     List<ParticipationRequestDto> getByInitiator(int userId, int eventId);
+
     ParticipationRequest findById(int requestId);
+
     EventRequestStatusUpdateResult moderation(int userId,
                                               int eventId,
                                               EventRequestStatusUpdateRequest request);

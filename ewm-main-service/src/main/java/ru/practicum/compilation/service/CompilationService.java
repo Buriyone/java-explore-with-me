@@ -11,8 +11,12 @@ import java.util.List;
  */
 public interface CompilationService {
     CompilationDto add(NewCompilationDto compilationDto);
+
     CompilationDto update(int compId, UpdateCompilationRequest request);
+
     void delete(int compId);
+
     List<CompilationDto> getAll(Boolean pinned, int from, int size);
+
     CompilationDto getById(int compId);
 }

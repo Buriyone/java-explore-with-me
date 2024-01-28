@@ -76,7 +76,7 @@ public interface EventMapper {
      * Вспомогательный метод маппинга {@link User} в {@link UserShortDto}.
      */
     @Named("toUserShortDto")
-    default UserShortDto toUserShortDto (User user) {
+    default UserShortDto toUserShortDto(User user) {
         return Mappers.getMapper(UserMapper.class).toUserShortDto(user);
     }
 }

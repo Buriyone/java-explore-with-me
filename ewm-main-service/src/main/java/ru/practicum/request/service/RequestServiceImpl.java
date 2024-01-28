@@ -192,7 +192,7 @@ public class RequestServiceImpl implements RequestService {
     private List<ParticipationRequestDto> statusUpdater(List<Integer> ids, State status) {
         log.debug("Осуществляется обновление и сохранение списка заявок на новый статус: {}.", status);
         for (int id : ids) {
-            if(id == 0) {
+            if (id == 0) {
                 throw new ValidationException("Один или несколько уникальных идентификаторов не зарегистрированы.");
             }
         }

@@ -9,7 +9,6 @@ import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.repository.CategoryRepository;
 import ru.practicum.event.repository.EventRepository;
-import ru.practicum.event.service.EventService;
 import ru.practicum.exception.model.ConflictException;
 import ru.practicum.exception.model.NotFoundException;
 import ru.practicum.exception.model.ValidationException;
@@ -151,7 +150,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void existsByIds(int[] categoryIds) {
         log.debug("Осуществляется проверка категорий из списка.");
         for (Integer id : categoryIds) {
-            if(id == 0) {
+            if (id == 0) {
                 throw new ValidationException("Один или несколько уникальных идентификаторов не зарегистрировано.");
             }
         }
