@@ -239,12 +239,12 @@ public class EventServiceImpl implements EventService {
             BooleanExpression byLimitConfirm = QEvent.event.confirmedRequests.lt(QEvent.event.participantLimit);
             builder.and(byLimitFree).or(byLimitConfirm);
         }
+        saveStat(request);
         List<EventShortDto> events = eventRepository.findAll(builder,
                         PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "eventDate")))
                 .getContent()
                 .stream()
                 .peek(event -> {
-                    saveStat(request);
                     event.setViews(getViews(event));
                 })
                 .map(eventMapper::toEventShortDto)
