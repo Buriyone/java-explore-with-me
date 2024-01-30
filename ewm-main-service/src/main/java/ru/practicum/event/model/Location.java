@@ -5,9 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
- * Класс локации.
+ * Класс географических координат.
  */
 @Data
 @Entity
@@ -22,11 +23,13 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     /**
-     * Координаты широты.
+     * Координат широты.
      */
+    @NotNull(message = "Координат широты не может отсутствовать.")
     private Float lat;
     /**
-     * Координаты долготы.
+     * Координат долготы.
      */
+    @NotNull(message = "Координат долготы не может отсутствовать.")
     private Float lon;
 }

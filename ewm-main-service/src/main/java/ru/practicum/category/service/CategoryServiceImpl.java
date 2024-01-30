@@ -73,7 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             log.info("Категория успешно обновлена.");
             categoryDto.setId(catId);
-            return mapper.toCategoryDto(repository.save(mapper.toCategory(categoryDto)));
+            return categoryDto;
         }
     }
 

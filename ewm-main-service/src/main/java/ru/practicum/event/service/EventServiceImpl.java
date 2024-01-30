@@ -44,7 +44,7 @@ public class EventServiceImpl implements EventService {
     /**
      * Предоставляет доступ к клиенту сервиса статистики.
      */
-    public final ClientService statService;
+    private final ClientService statService;
     /**
      * Форматтер времени.
      */
@@ -161,7 +161,7 @@ public class EventServiceImpl implements EventService {
                     throw new ConflictException("Нет прав администратора.");
             }
         }
-        return eventMapper.toEventFullDto(eventRepository.save(updatedEvent));
+        return eventMapper.toEventFullDto(updatedEvent);
     }
 
     /**
@@ -183,7 +183,7 @@ public class EventServiceImpl implements EventService {
         }
         saveStat(request);
         event.setViews(getViews(event));
-        return eventMapper.toEventFullDto(eventRepository.save(event));
+        return eventMapper.toEventFullDto(event);
     }
 
     /**
@@ -244,9 +244,7 @@ public class EventServiceImpl implements EventService {
                         PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "eventDate")))
                 .getContent()
                 .stream()
-                .peek(event -> {
-                    event.setViews(getViews(event));
-                })
+                .peek(event -> event.setViews(getViews(event)))
                 .map(eventMapper::toEventShortDto)
                 .collect(Collectors.toList());
         if (sort.equals(SortOption.VIEWS)) {
@@ -335,16 +333,16 @@ public class EventServiceImpl implements EventService {
                 && LocalDateTime.now().isAfter(LocalDateTime.parse(request.getEventDate(), formatter))) {
             throw new ValidationException("Дата начала изменяемого события не может быть в прошлом.");
         }
-        Event upatedEvent = eventUpdater(event, eventMapper.toUpdateEventUserRequest(request));
+        Event updatedEvent = eventUpdater(event, eventMapper.toUpdateEventUserRequest(request));
         if (request.getStateAction() == null || request.getStateAction().equals(State.PUBLISH_EVENT.toString())) {
-            upatedEvent.setState(State.PUBLISHED);
+            updatedEvent.setState(State.PUBLISHED);
         } else if (request.getStateAction().equals(State.REJECT_EVENT.toString())) {
-            upatedEvent.setState(State.CANCELED);
+            updatedEvent.setState(State.CANCELED);
         } else {
             throw new ConflictException("Статус для обновления указан некорректно.");
         }
-        upatedEvent.setPublishedOn(LocalDateTime.now());
-        return eventMapper.toEventFullDto(eventRepository.save(upatedEvent));
+        updatedEvent.setPublishedOn(LocalDateTime.now());
+        return eventMapper.toEventFullDto(updatedEvent);
     }
 
     /**

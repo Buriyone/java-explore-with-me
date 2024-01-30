@@ -4,11 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.compilation.dto.CompilationDto;
-import ru.practicum.compilation.dto.NewCompilationDto;
-import ru.practicum.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.compilation.service.CompilationService;
-
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -16,6 +12,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(path = "/compilations")
 public class CompilationController {
     /**
      * Предоставляет доступ к сервису подборки событий.
@@ -23,37 +20,9 @@ public class CompilationController {
     private final CompilationService compilationService;
 
     /**
-     * Обрабатывает запросы на регистрацию и сохранение подборки событий.
-     */
-    @PostMapping("/admin/compilations")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto add(@Valid @RequestBody NewCompilationDto compilationDto) {
-        return compilationService.add(compilationDto);
-    }
-
-    /**
-     * Обрабатывает запросы на обновление данных подборки событий.
-     */
-    @PatchMapping("/admin/compilations/{compId}")
-    @ResponseStatus(HttpStatus.OK)
-    public CompilationDto update(@PathVariable int compId,
-                                 @Valid @RequestBody UpdateCompilationRequest request) {
-        return compilationService.update(compId, request);
-    }
-
-    /**
-     * Обрабатывает запросы на удаление подборки событий.
-     */
-    @DeleteMapping("/admin/compilations/{compId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int compId) {
-        compilationService.delete(compId);
-    }
-
-    /**
      * Обрабатывает запросы на предоставление списка подборки событий.
      */
-    @GetMapping("/compilations")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CompilationDto> getAll(@RequestParam(required = false) Boolean pinned,
                                        @RequestParam(defaultValue = "0") int from,
@@ -64,7 +33,7 @@ public class CompilationController {
     /**
      * Обрабатывает запросы на предоставление подборки событий по уникальному идентификатору.
      */
-    @GetMapping("/compilations/{compId}")
+    @GetMapping("/{compId}")
     @ResponseStatus(HttpStatus.OK)
     public CompilationDto getById(@PathVariable int compId) {
         return compilationService.getById(compId);

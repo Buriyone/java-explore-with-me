@@ -5,8 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.practicum.user.model.User;
 
-import java.util.Optional;
-
 /**
  * Репозиторий данных пользователей.
  */
@@ -20,11 +18,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * Проверяет наличие электронной почты в базе.
      */
     boolean existsByEmail(String email);
-
-    /**
-     * Находит пользователя в базе по уникальному идентификатору.
-     */
-    Optional<User> findById(int userId);
 
     /**
      * Постранично находит пользователей в базе по массиву с уникальными идентификаторами.

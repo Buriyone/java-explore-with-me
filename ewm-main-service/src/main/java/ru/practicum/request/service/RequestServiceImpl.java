@@ -122,7 +122,6 @@ public class RequestServiceImpl implements RequestService {
         ParticipationRequest request = findById(requestId);
         authorChecker(request, userId);
         request.setStatus(State.CANCELED);
-        request = requestRepository.save(request);
         eventConfirmedRequestsUpdater(request.getEvent());
         return requestMapper.toParticipationRequestDto(request);
     }
@@ -203,7 +202,6 @@ public class RequestServiceImpl implements RequestService {
                                 participationRequest.getId()));
                     }
                     participationRequest.setStatus(status);
-                    requestRepository.save(participationRequest);
                 })
                 .map(requestMapper::toParticipationRequestDto)
                 .collect(Collectors.toList());
@@ -217,7 +215,6 @@ public class RequestServiceImpl implements RequestService {
     private void eventConfirmedRequestsUpdater(Event event) {
         log.debug("Поступил запрос на обновление списка подтвержденных заявок на участие в событии.");
         event.setConfirmedRequests(requestRepository.countByEventAndStatus(event, State.CONFIRMED));
-        eventRepository.save(event);
     }
 
     /**

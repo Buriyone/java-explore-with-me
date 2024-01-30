@@ -16,6 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(path = "/users/{userId}")
 public class RequestController {
     /**
      * Предоставляет доступ к сервису заявок.
@@ -25,7 +26,7 @@ public class RequestController {
     /**
      * Обрабатывает запросы регистрации и сохранения заявок.
      */
-    @PostMapping("/users/{userId}/requests")
+    @PostMapping("/requests")
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto add(@PathVariable int userId,
                                        @RequestParam int eventId) {
@@ -35,7 +36,7 @@ public class RequestController {
     /**
      * Обрабатывает запросы предоставления списка заявок.
      */
-    @GetMapping("/users/{userId}/requests")
+    @GetMapping("/requests")
     @ResponseStatus(HttpStatus.OK)
     public List<ParticipationRequestDto> get(@PathVariable int userId) {
         return requestService.get(userId);
@@ -44,7 +45,7 @@ public class RequestController {
     /**
      * Обрабатывает запросы на отмену заявок.
      */
-    @PatchMapping("/users/{userId}/requests/{requestId}/cancel")
+    @PatchMapping("/requests/{requestId}/cancel")
     @ResponseStatus(HttpStatus.OK)
     public ParticipationRequestDto cancel(@PathVariable int userId,
                                           @PathVariable int requestId) {
@@ -54,7 +55,7 @@ public class RequestController {
     /**
      * Обрабатывает запросы на предоставление списка заявок для организатора.
      */
-    @GetMapping("/users/{userId}/events/{eventId}/requests")
+    @GetMapping("/events/{eventId}/requests")
     @ResponseStatus(HttpStatus.OK)
     public List<ParticipationRequestDto> getByInitiator(@PathVariable int userId,
                                                         @PathVariable int eventId) {
@@ -64,7 +65,7 @@ public class RequestController {
     /**
      * Обрабатывает запросы на пре-модерацию статуса заявок на участие в событии.
      */
-    @PatchMapping("/users/{userId}/events/{eventId}/requests")
+    @PatchMapping("/events/{eventId}/requests")
     @ResponseStatus(HttpStatus.OK)
     public EventRequestStatusUpdateResult moderation(@PathVariable int userId,
                                                      @PathVariable int eventId,
