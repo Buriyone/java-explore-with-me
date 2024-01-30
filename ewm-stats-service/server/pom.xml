@@ -9,7 +9,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <name>server</name>
     <artifactId>server</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

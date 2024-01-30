@@ -12,5 +12,5 @@ import java.util.List;
 public interface StatService {
     StatDto add(StatDto statDto);
 
-    List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, boolean unique);
+    List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique);
 }

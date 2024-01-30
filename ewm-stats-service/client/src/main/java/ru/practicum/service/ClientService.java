@@ -9,9 +9,13 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.StatDto;
+import ru.practicum.StatResponseDto;
 import ru.practicum.client.BaseClient;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +28,14 @@ public class ClientService extends BaseClient {
      * Константа префикса.
      */
     private static final String API_PREFIX = "/";
+    /**
+     * Паттерн формата времени.
+     */
+    public static final String PATTERN = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * Форматтер времени.
+     */
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN);
 
     /**
      * Конструктор сервиса.
@@ -39,17 +51,21 @@ public class ClientService extends BaseClient {
     /**
      * Отправляет POST запрос передавая данные подлежащие сохранению.
      */
-    public ResponseEntity<Object> add(StatDto statDto) {
+    public StatDto add(StatDto statDto) {
         log.info("Поступил POST запрос на передачу данных подлежащих сохранению.");
-        return post("/hit", statDto);
+        ResponseEntity<StatDto> response = post("/hit", statDto, new StatDto());
+        return response.getBody();
     }
 
     /**
      * Отправляет GET запрос передавая параметры по которым производится поиск и предоставление данных.
      */
-    public ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
+    public List<StatResponseDto> get(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
         log.info("Поступил GET запрос на передачу и возврат данных по параметрам.");
-        Map<String, Object> param = Map.of("start", start, "end", end, "uris", uris, "unique", unique);
-        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", param);
+        Map<String, Object> parameters = Map.of("start", start.format(formatter), "end", end.format(formatter),
+                "uris", uris, "unique", unique);
+        ResponseEntity<ArrayList<StatResponseDto>> response
+                = get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters, new ArrayList<>());
+        return response.getBody();
     }
 }
