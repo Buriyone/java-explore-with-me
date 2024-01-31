@@ -36,4 +36,6 @@ public interface EventService {
     EventFullDto updateByIdByAdmin(int eventId, UpdateEventAdminRequest request);
 
     List<Event> findAllByIds(List<Integer> ids);
+
+    List<EventShortDto> getFeed(int subscriberId, Boolean onlyAvailable, SortOption sort, int from, int size);
 }

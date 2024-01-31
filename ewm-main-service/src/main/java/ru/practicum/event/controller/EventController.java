@@ -3,6 +3,7 @@ package ru.practicum.event.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.assistant.SortOption;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.service.EventService;
 import javax.validation.Valid;
@@ -64,5 +65,18 @@ public class EventController {
                                               @PathVariable int eventId,
                                               @Valid @RequestBody UpdateEventUserRequest eventUserRequest) {
         return eventService.updateByIdByInitiator(userId, eventId, eventUserRequest);
+    }
+
+    /**
+     * Обрабатывает запросы на предоставление ленты событий.
+     */
+    @GetMapping("/subscriptions")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EventShortDto> getFeed(@PathVariable int userId,
+                                       @RequestParam(defaultValue = "false") Boolean onlyAvailable,
+                                       @RequestParam(defaultValue = "EVENT_DATE") SortOption sort,
+                                       @RequestParam(defaultValue = "0") int from,
+                                       @RequestParam(defaultValue = "10") int size) {
+        return eventService.getFeed(userId, onlyAvailable, sort, from, size);
     }
 }

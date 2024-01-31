@@ -22,6 +22,9 @@ import ru.practicum.exception.model.NotFoundException;
 import ru.practicum.exception.model.ValidationException;
 import ru.practicum.event.repository.LocationRepository;
 import ru.practicum.service.ClientService;
+import ru.practicum.subscription.model.Subscription;
+import ru.practicum.subscription.repository.SubscriptionRepository;
+import ru.practicum.user.model.User;
 import ru.practicum.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,6 +72,10 @@ public class EventServiceImpl implements EventService {
      * Предоставляет доступ к репозиторию событий.
      */
     private final EventRepository eventRepository;
+    /**
+     * Предоставляет доступ к репозиторию подписок.
+     */
+    private final SubscriptionRepository subscriptionRepository;
 
     /**
      * Сервисный метод регистрации и сохранения события.
@@ -380,6 +387,53 @@ public class EventServiceImpl implements EventService {
             }
         }
         return eventRepository.findAllByIdIn(ids);
+    }
+
+    /**
+     * Сервисный метод предоставления пользователю ленты событий на основе его подписок по параметрам.
+     * @param subscriberId уникальный идентификатор пользователя-подписчика.
+     * @param sort Вариант сортировки: по дате события или по количеству просмотров.
+     * @param onlyAvailable только события у которых не исчерпан лимит запросов на участие.
+     * @param from количество событий, которые нужно пропустить для формирования текущего набора.
+     * @param size количество событий в наборе.
+     * @return возвращает список событий в формате {@link EventShortDto}.
+     */
+    @Override
+    @Transactional
+    public List<EventShortDto> getFeed(int subscriberId, Boolean onlyAvailable, SortOption sort, int from, int size) {
+        log.info("Поступил запрос от пользователя с id: {} на предоставление новостной ленты.", subscriberId);
+        User user = userService.findById(subscriberId);
+        List<User> initiators = subscriptionRepository.findAllBySubscriber(user,
+                        PageRequest.of(0, 10))
+                .stream()
+                .map(Subscription::getUser)
+                .collect(Collectors.toList());
+        BooleanBuilder builder = new BooleanBuilder();
+        if (!initiators.isEmpty()) {
+            BooleanExpression byInitiator = QEvent.event.initiator.in(initiators);
+            builder.and(byInitiator);
+        } else {
+            return new ArrayList<>();
+        }
+        if (onlyAvailable.equals(true)) {
+            BooleanExpression byLimitFree = QEvent.event.participantLimit.eq(0);
+            BooleanExpression byLimitConfirm = QEvent.event.confirmedRequests.lt(QEvent.event.participantLimit);
+            builder.and(byLimitFree).or(byLimitConfirm);
+        }
+        List<EventShortDto> feed = eventRepository.findAll(builder,
+                        PageRequest.of(from, size, Sort.by(Sort.Direction.ASC, "eventDate")))
+                .getContent()
+                .stream()
+                .peek(event -> event.setViews(getViews(event)))
+                .map(eventMapper::toEventShortDto)
+                .collect(Collectors.toList());
+        if (sort.equals(SortOption.VIEWS)) {
+            return feed.stream()
+                    .sorted(Comparator.comparing(EventShortDto::getViews))
+                    .collect(Collectors.toList());
+        } else {
+            return feed;
+        }
     }
 
     /**
