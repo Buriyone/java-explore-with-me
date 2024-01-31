@@ -399,7 +399,6 @@ public class EventServiceImpl implements EventService {
      * @return возвращает список событий в формате {@link EventShortDto}.
      */
     @Override
-    @Transactional
     public List<EventShortDto> getFeed(int subscriberId, Boolean onlyAvailable, SortOption sort, int from, int size) {
         log.info("Поступил запрос от пользователя с id: {} на предоставление новостной ленты.", subscriberId);
         User user = userService.findById(subscriberId);
