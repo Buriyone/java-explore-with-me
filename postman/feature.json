@@ -1,0 +1,2536 @@
+{
+	"info": {
+		"_postman_id": "d5a07fd5-7c44-4834-b38a-fe017fcfc011",
+		"name": "feature",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30424465"
+	},
+	"item": [
+		{
+			"name": "errors",
+			"item": [
+				{
+					"name": "Ошибка 400 при попытке предать незарегистрированный id пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        user.id = 0;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 400 при попытке предать незарегистрированный id подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        subscriber.id = 0;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 404 при попытке получить несуществующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        user.id = 999;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 404 при попытке получить несуществующего подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        subscriber.id = 999;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 409 при попытке подписаться на самого себя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        subscriber.id = user.id;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 409 при попытке повторной подписки",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        api.addSubscriber(user.id, subscriber.id);\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 400 при попытке получить подписки незарегистрированного подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        subscriber.id = 0;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/subscriptions?subscriberId={{subscriber_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 404 при попытке получить подписки незарегистрированного подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        subscriber.id = 999;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/subscriptions?subscriberId={{subscriber_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 400 при попытке получить подписчиков незарегистрированного пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        pm.collectionVariables.set(\"user_id\", 0)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/subscriptions/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 400 при попытке получить подписчиков несуществующего пользователя",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        pm.collectionVariables.set(\"user_id\", 999)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/subscriptions/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 400 при попытке отписки от незарегистрированного пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        user.id = 0;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 400 при попытке отписки незарегистрированного подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        subscriber.id = 0;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 404 при попытке отписки несуществующего подписчика",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        subscriber.id = 999;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 404 при попытке отписки от несуществующего пользователя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        user.id = 999;\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 409 при попытке отписаться от самого себя",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(user);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 409 при попытке отписаться не являясь подписчиком",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"\r",
+									"        pm.request.removeQueryParams(['userId', 'subscriberId']);\r",
+									"        pm.request.addQueryParams([`userId=` + user.id]);\r",
+									"        pm.request.addQueryParams(['subscriberId=' + subscriber.id]);\r",
+									"\r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 400 при попытке предоставить ленту событий незарегистрированному пользователю",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"uid\", 0)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 400 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/:userId/events/subscriptions?sort=VIEWS",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":userId",
+								"events",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "VIEWS"
+								}
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{uid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ошибка 404 при попытке предоставить ленту событий несуществующему пользователю",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"uid\", 999)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 404 и данные в формате JSON\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/:userId/events/subscriptions?sort=VIEWS",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":userId",
+								"events",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "VIEWS"
+								}
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{uid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subscriptions",
+			"item": [
+				{
+					"name": "Подписка",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const subscriber = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", subscriber.id)\r",
+									"        \r",
+									"        pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function() {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Предоставление списка подписок",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const user1 = await api.addUser(rnd.getUser());\r",
+									"        const user2 = await api.addUser(rnd.getUser());\r",
+									"        const user3 = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        api.addSubscriber(user1.id, user.id);\r",
+									"        api.addSubscriber(user2.id, user.id);\r",
+									"        api.addSubscriber(user3.id, user.id);\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", user.id)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let serverResponse = pm.response;\r",
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"}); \r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"pm.expect(target).is.an('array');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/subscriptions?subscriberId={{subscriber_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Предоставление списка подписчиков",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const user1 = await api.addUser(rnd.getUser());\r",
+									"        const user2 = await api.addUser(rnd.getUser());\r",
+									"        const user3 = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        api.addSubscriber(user.id, user1.id);\r",
+									"        api.addSubscriber(user.id, user2.id);\r",
+									"        api.addSubscriber(user.id, user3.id);\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let serverResponse = pm.response;\r",
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"}); \r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"pm.expect(target).is.an('array');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/subscriptions/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Отписка",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const user1 = await api.addUser(rnd.getUser());\r",
+									"        const user2 = await api.addUser(rnd.getUser());\r",
+									"        const user3 = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        api.addSubscriber(user.id, user1.id);\r",
+									"        api.addSubscriber(user.id, user2.id);\r",
+									"        api.addSubscriber(user.id, user3.id);\r",
+									"        pm.collectionVariables.set(\"user_id\", user.id)\r",
+									"        pm.collectionVariables.set(\"subscriber_id\", user1.id)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204 и данные в формате json\", function() {\r",
+									"    pm.response.to.have.status(204);\r",
+									"}); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/subscriptions?userId={{user_id}}&subscriberId={{subscriber_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								},
+								{
+									"key": "subscriberId",
+									"value": "{{subscriber_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Предоставление ленты событий",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    \r",
+									"    try {\r",
+									"        const user = await api.addUser(rnd.getUser());\r",
+									"        const user1 = await api.addUser(rnd.getUser());\r",
+									"        const user2 = await api.addUser(rnd.getUser());\r",
+									"        const user3 = await api.addUser(rnd.getUser());\r",
+									"\r",
+									"        const category = await api.addCategory(rnd.getCategory());\r",
+									"        await api.addEvent(user1.id, rnd.getEvent(category.id));\r",
+									"        await api.addEvent(user1.id, rnd.getEvent(category.id))\r",
+									"        await api.addEvent(user1.id, rnd.getEvent(category.id))\r",
+									"\r",
+									"        await api.addEvent(user2.id, rnd.getEvent(category.id))\r",
+									"        await api.addEvent(user2.id, rnd.getEvent(category.id))\r",
+									"\r",
+									"        await api.addEvent(user3.id, rnd.getEvent(category.id))\r",
+									"\r",
+									"        api.addSubscriber(user1.id,user.id);\r",
+									"        api.addSubscriber(user2.id,user.id);\r",
+									"        api.addSubscriber(user3.id,user.id);\r",
+									"        pm.collectionVariables.set(\"uid\", user.id)\r",
+									"  ;\r",
+									"    \r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let serverResponse = pm.response;\r",
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"}); \r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"pm.expect(target).is.an('array');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/:userId/events/subscriptions?sort=VIEWS",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":userId",
+								"events",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "VIEWS"
+								}
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{uid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"API = class {",
+					"    constructor(postman, verbose = false, baseUrl = \"http://localhost:8080\") {",
+					"        this.baseUrl = baseUrl;",
+					"        this.pm = postman;",
+					"        this._verbose = verbose;",
+					"    }",
+					"",
+					"    async addUser(user, verbose=null) {",
+					"        return this.post(\"/admin/users\", user, \"Ошибка при добавлении нового пользователя: \", verbose);",
+					"    }",
+					"",
+					"    ",
+					"    async addSubscriber(userId, userId2, verbose=null) {",
+					"        return this.post(\"/subscriptions?userId=\" + userId + \"&subscriberId=\" + userId2, null, \"Ошибка при добавлении нового подписчика: \", verbose);",
+					"    }",
+					"",
+					"    async deleteSubscriber(userId, userId2, verbose=null) {",
+					"        return this.deleteAny(\"/subscriptions?userId=\" + userId + \"&subscriberId=\" + userId2, null, \"Ошибка при удаление  подписчика: \", verbose);",
+					"    }",
+					"",
+					"    async addCategory(category, verbose=null) {",
+					"        return this.post(\"/admin/categories\", category, \"Ошибка при добавлении новой категории: \", verbose);",
+					"    }",
+					"",
+					"    async addEvent(userId, event, verbose=null) {",
+					"        return this.post(\"/users/\" + userId + \"/events\", event, \"Ошибка при добавлении нового события: \", verbose);",
+					"    }",
+					"",
+					"    async addCompilation(compilation, verbose=null) {",
+					"        return this.post(\"/admin/compilations\", compilation, \"Ошибка при добавлении новой подборки: \", verbose);",
+					"    }",
+					"",
+					"    async publishParticipationRequest(eventId, userId, verbose=null) {",
+					"        return this.post('/users/' + userId + '/requests?eventId=' + eventId, null, \"Ошибка при добавлении нового запроса на участие в событии\", verbose);",
+					"    }",
+					"",
+					"    async publishEvent(eventId, verbose=null) {",
+					"        return this.patch('/admin/events/' + eventId, {stateAction: \"PUBLISH_EVENT\"}, \"Ошибка при публикации события\", verbose);",
+					"    }",
+					"    ",
+					"    async rejectEvent(eventId, verbose=null) {",
+					"        return this.patch('/admin/events/' + eventId, {stateAction: \"REJECT_EVENT\"}, \"Ошибка при отмене события\", verbose);",
+					"    }",
+					"",
+					"    async acceptParticipationRequest(eventId, userId, reqId, verbose=null) {",
+					"        return this.patch('/users/' + userId + '/events/' + eventId + '/requests/', {requestIds:[reqId], status: \"CONFIRMED\"}, \"Ошибка при принятии заявки на участие в событии\", verbose);",
+					"    }",
+					"",
+					"    async findCategory(catId, verbose=null) {",
+					"        return this.get('/categories/' + catId, null, \"Ошибка при поиске категории по id\", verbose);",
+					"    }",
+					"",
+					"    async findCompilation(compId, verbose=null) {",
+					"        return this.get('/compilations/' + compId, null, \"Ошибка при поиске подборки по id\", verbose);",
+					"    }",
+					"",
+					"    async findEvent(eventId, verbose=null) {",
+					"        return this.get('/events/' + eventId, null, \"Ошибка при поиске события по id\", verbose);",
+					"    }",
+					"",
+					"    async findUser(userId, verbose=null) {",
+					"        return this.get('/admin/users?ids=' + userId, null, \"Ошибка при поиске пользователя по id\", verbose);",
+					"    }",
+					"",
+					"    async post(path, body, errorText = \"Ошибка при выполнении post-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"POST\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async deleteAny(path, body, errorText = \"Ошибка при выполнении delete-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"DELETE\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async patch(path, body = null, errorText = \"Ошибка при выполнении patch-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"PATCH\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async get(path, body = null, errorText = \"Ошибка при выполнении get-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"GET\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async sendRequest(method, path, body=null, errorText = \"Ошибка при выполнении запроса: \", verbose=null) {",
+					"        return new Promise((resolve, reject) => {",
+					"            verbose = verbose == null ? this._verbose : verbose;",
+					"",
+					"            const request = {",
+					"                url: this.baseUrl + path,",
+					"                method: method,",
+					"                body: body == null ? \"\" : JSON.stringify(body),",
+					"                header: { \"Content-Type\": \"application/json\" },",
+					"            };",
+					"",
+					"            if(verbose) {",
+					"                console.log(\"Отправляю запрос: \", request);",
+					"            }",
+					"",
+					"            try {",
+					"                this.pm.sendRequest(request, (error, response) => {",
+					"                    if(error || (response.code >= 400 && response.code <= 599)) {",
+					"                        let err = error ? error : JSON.stringify(response.json());",
+					"                        console.error(\"При выполнении запроса к серверу возникла ошика.\\n\", err,",
+					"                             \"\\nДля отладки проблемы повторите такой же запрос к вашей программе \" + ",
+					"                             \"на локальном компьютере. Данные запроса:\\n\", JSON.stringify(request));",
+					"",
+					"                        reject(new Error(errorText + err));",
+					"                    }",
+					"",
+					"                    if(verbose) {",
+					"                        console.log(\"Результат обработки запроса: код состояния - \", response.code, \", тело: \", response.json());",
+					"                    }",
+					"                    try{",
+					"                         resolve(response.json());",
+					"                    } catch(e){",
+					"                        resolve({})",
+					"                    }",
+					"                   ",
+					"                });",
+					"            } catch(err) {",
+					"                if(verbose) {",
+					"                    console.error(errorText, err);",
+					"                }",
+					"                return Promise.reject(err);",
+					"            }",
+					"        });",
+					"    }",
+					"};",
+					"",
+					"RandomUtils = class {",
+					"    constructor() {}",
+					"",
+					"    getUser() {",
+					"        return {",
+					"            name: pm.variables.replaceIn('{{$randomFullName}}'),",
+					"            email: pm.variables.replaceIn('{{$randomEmail}}')",
+					"        };",
+					"    }",
+					"",
+					"    getCategory() {",
+					"        return {",
+					"            name: pm.variables.replaceIn('{{$randomWord}}') + Math.floor(Math.random() * 100).toString()",
+					"        };",
+					"    }",
+					"",
+					"    getEvent(categoryId) {",
+					"        return {",
+					"            annotation: pm.variables.replaceIn('{{$randomLoremParagraph}}'),",
+					"            category: categoryId,",
+					"            description: pm.variables.replaceIn('{{$randomLoremParagraphs}}'),",
+					"            eventDate: this.getFutureDateTime(),",
+					"            location: {",
+					"                lat: parseFloat(pm.variables.replaceIn('{{$randomLatitude}}')),",
+					"                lon: parseFloat(pm.variables.replaceIn('{{$randomLongitude}}')),",
+					"            },",
+					"            paid: pm.variables.replaceIn('{{$randomBoolean}}'),",
+					"            participantLimit: pm.variables.replaceIn('{{$randomInt}}'),",
+					"            requestModeration: pm.variables.replaceIn('{{$randomBoolean}}'),",
+					"            title: pm.variables.replaceIn('{{$randomLoremSentence}}'),",
+					"        }",
+					"    }",
+					"",
+					"    getCompilation(...eventIds) {",
+					"        return {",
+					"            title: pm.variables.replaceIn('{{$randomLoremSentence}}').slice(0, 50),",
+					"            pinned: pm.variables.replaceIn('{{$randomBoolean}}'),",
+					"            events: eventIds",
+					"        };",
+					"    }",
+					"",
+					"",
+					"    getFutureDateTime(hourShift = 5, minuteShift=0, yearShift=0) {",
+					"        let moment = require('moment');",
+					"",
+					"        let m = moment();",
+					"        m.add(hourShift, 'hour');",
+					"        m.add(minuteShift, 'minute');",
+					"        m.add(yearShift, 'year');",
+					"",
+					"        return m.format('YYYY-MM-DD HH:mm:ss');",
+					"    }",
+					"",
+					"    getWord(length = 1) {",
+					"        let result = '';",
+					"        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+					"        const charactersLength = characters.length;",
+					"        let counter = 0;",
+					"        while (counter < length) {",
+					"            result += characters.charAt(Math.floor(Math.random() * charactersLength));",
+					"            counter += 1;",
+					"        }",
+					"        return result;",
+					"    }",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "category_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "event_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "request_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "confirmedRequests",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "category_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "subscriber_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "from",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "size",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "uid",
+			"value": ""
+		},
+		{
+			"key": "uid1",
+			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	]
+}
